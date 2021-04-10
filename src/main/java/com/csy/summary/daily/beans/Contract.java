@@ -1,4 +1,4 @@
-package com.csy.druid.demo.beans;
+package com.csy.summary.daily.beans;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;

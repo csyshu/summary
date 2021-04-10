@@ -1,12 +1,11 @@
-package com.csy.druid.demo.component.rocket;
+package com.csy.summary.daily.component.rocket;
 
-import com.csy.druid.demo.config.properties.OtherConfigure;
+import com.csy.summary.daily.config.properties.OtherConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;

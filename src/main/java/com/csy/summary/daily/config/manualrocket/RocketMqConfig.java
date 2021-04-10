@@ -1,4 +1,4 @@
-package com.csy.druid.demo.config.manualrocket;
+package com.csy.summary.daily.config.manualrocket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;

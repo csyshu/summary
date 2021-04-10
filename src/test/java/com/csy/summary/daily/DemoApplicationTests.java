@@ -1,6 +1,6 @@
-package com.csy.druid.demo;
+package com.csy.summary.daily;
 
-import com.csy.druid.demo.beans.Contract;
+import com.csy.summary.daily.beans.Contract;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;

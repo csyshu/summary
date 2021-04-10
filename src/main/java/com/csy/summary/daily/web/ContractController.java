@@ -1,11 +1,11 @@
-package com.csy.druid.demo.web;
+package com.csy.summary.daily.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.br.dynamic.loglevelspringbootstarter.service.LoglevelSettingService;
-import com.csy.druid.demo.beans.Contract;
-import com.csy.druid.demo.mapper.ContractMapper;
+import com.csy.summary.daily.beans.Contract;
+import com.csy.summary.daily.mapper.ContractMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

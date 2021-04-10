@@ -1,13 +1,12 @@
-package com.csy.druid.demo.config.manualrocket;
+package com.csy.summary.daily.config.manualrocket;
 
-import com.csy.druid.demo.component.rocket.RocketMsgListener;
-import com.csy.druid.demo.config.properties.ConsumerConfigure;
+import com.csy.summary.daily.component.rocket.RocketMsgListener;
+import com.csy.summary.daily.config.properties.ConsumerConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 

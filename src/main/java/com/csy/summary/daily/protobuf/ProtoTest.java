@@ -1,4 +1,4 @@
-package com.csy.druid.demo.protobuf;
+package com.csy.summary.daily.protobuf;
 
 import com.google.protobuf.ByteString;
 

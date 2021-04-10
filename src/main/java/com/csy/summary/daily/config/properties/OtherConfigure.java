@@ -1,4 +1,4 @@
-package com.csy.druid.demo.config.properties;
+package com.csy.summary.daily.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

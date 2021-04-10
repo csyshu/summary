@@ -1,11 +1,10 @@
-package com.csy.druid.demo.config.manualrocket;
+package com.csy.summary.daily.config.manualrocket;
 
-import com.csy.druid.demo.config.properties.ProducerConfigure;
+import com.csy.summary.daily.config.properties.ProducerConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 

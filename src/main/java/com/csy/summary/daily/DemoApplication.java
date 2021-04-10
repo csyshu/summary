@@ -1,4 +1,4 @@
-package com.csy.druid.demo;
+package com.csy.summary.daily;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;

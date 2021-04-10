@@ -1,7 +1,7 @@
-package com.csy.druid.demo.mapper;
+package com.csy.summary.daily.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.csy.druid.demo.beans.Contract;
+import com.csy.summary.daily.beans.Contract;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
