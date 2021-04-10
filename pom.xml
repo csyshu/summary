@@ -125,10 +125,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--自定义日志级别动态控制-->
         <dependency>
             <groupId>com.br.dynamic</groupId>
             <artifactId>log-level-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!--binlog解析工具-->
+        <dependency>
+            <groupId>com.github.shyiko</groupId>
+            <artifactId>mysql-binlog-connector-java</artifactId>
+            <version>0.21.0</version>
         </dependency>
     </dependencies>
 
