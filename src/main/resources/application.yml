@@ -8,7 +8,7 @@ spring:
     username: contract
     password: contract
     #非必填 可以根据url自动判断
-    #driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -93,14 +93,13 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.csy.druid.demo.beans
+  typeAliasesPackage: com.csy.summary.daily.beans
   global-config:
     db-config:
       #刷新mapper 调试神器
       #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
       id-type: auto
       #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
-      field-strategy: default
       #数据库大写下划线转换
       #capital-mode: true
       #驼峰下划线转换
@@ -112,6 +111,9 @@ mybatis-plus:
       #meta-object-handler: com.baomidou.springboot.xxx
       #自定义SQL注入器
       #sql-injector: com.baomidou.springboot.xxx
+      insert-strategy: default
+      update-strategy: default
+      select-strategy: default
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
@@ -153,4 +155,12 @@ dynamic:
     enable: true
     level: ERROR
     log-name: TEST-LOG-LEVEL
+
+#配置分页插件pagehelper
+pagehelper:
+  #  helperDialect: mysql,如果是多类型数据源，不要配置，自动识别
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  auto-runtime-dialect: true
 
