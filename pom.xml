@@ -8,8 +8,8 @@
         <version>2.3.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.csy.durid</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>com.csy.summary</groupId>
+    <artifactId>daily</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
     <description>durid连接池纯yml配置</description>
