@@ -1,0 +1,28 @@
+package com.csy.summary.daily.jmh;
+
+import lombok.Data;
+
+import java.util.Date;
+
+/**
+ * <p>Description：</p>
+ *
+ * @author shuyun.cheng
+ * @date 2021/1/15 17:49
+ */
+@Data
+public class SourceVO {
+    private Integer p1;
+    private Long p2;
+    private byte p3;
+    private Date date1;
+    private String pattr1;
+    private Inner in;
+    private String fullName;
+
+    public static class Inner {
+        public Inner(int i) {
+            System.out.println(i);
+        }
+    }
+}
