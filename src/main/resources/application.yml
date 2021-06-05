@@ -164,3 +164,9 @@ pagehelper:
   params: count=countSql
   auto-runtime-dialect: true
 
+# redisson配置
+redisson:
+  clusterNodes: ip1:port1,ip2:port2
+  commandTimeout: 5000
+  expireSeconds: 120
+
