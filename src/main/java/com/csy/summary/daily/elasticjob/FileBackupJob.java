@@ -2,6 +2,7 @@ package com.csy.summary.daily.elasticjob;
 
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * @author shuyun.cheng
  */
+@Slf4j
 @Component
 public class FileBackupJob implements SimpleJob {
 
@@ -30,7 +32,7 @@ public class FileBackupJob implements SimpleJob {
             FileBackupJob.files.add(new FileCustom(String.valueOf(i + 30), "文件" + (i + 30), "radio", "content" + (i + 30)));
             FileBackupJob.files.add(new FileCustom(String.valueOf(i + 40), "文件" + (i + 40), "video", "content" + (i + 40)));
         }
-        System.out.println("生产测试数据完成");
+        log.info("生产测试数据完成");
     }
 
     //任务执行代码逻辑
@@ -67,7 +69,7 @@ public class FileBackupJob implements SimpleJob {
             }
 
         }
-        System.out.printf("time:%s,获取文件%d个\n", LocalDateTime.now(), num);
+        log.info("time:{},获取文件{}个", LocalDateTime.now(), num);
         return fileCustoms;
 
     }
@@ -80,7 +82,7 @@ public class FileBackupJob implements SimpleJob {
     public void backupFiles(List<FileCustom> files) {
         for (FileCustom fileCustom : files) {
             fileCustom.setBackedUp(true);
-            System.out.printf("time:%s,备份文件，名称：%s，类型：%s\n", LocalDateTime.now(), fileCustom.getName(), fileCustom.getType());
+            log.info("time:{},备份文件，名称：{}，类型：{}", LocalDateTime.now(), fileCustom.getName(), fileCustom.getType());
         }
     }
 }
