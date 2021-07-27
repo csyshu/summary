@@ -27,7 +27,7 @@ public class ElasticJobRegistryCenterConfig {
      * @return CoordinatorRegistryCenter
      */
     @Bean(initMethod = "init")
-    public CoordinatorRegistryCenter setUpRegistryCenter() {
+    public CoordinatorRegistryCenter setUpAndGetRegistryCenter() {
         //zk的配置
         ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration(ZOOKEEPER_CONNECTION_STRING, JOB_NAMESPACE);
         zookeeperConfiguration.setSessionTimeoutMilliseconds(1000);
