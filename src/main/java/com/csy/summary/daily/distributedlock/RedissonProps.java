@@ -15,4 +15,5 @@ public class RedissonProps {
     private String clusterNodes;
     private Integer expireSeconds;
     private Integer commandTimeout;
+    private String password;
 }

@@ -38,6 +38,7 @@ public class RedissonClientConfig {
         config.useClusterServers()
                 //设置集群状态扫描时间
                 .setScanInterval(2000)
+                .setPassword(redissonProps.getPassword())
                 .addNodeAddress(nodes)
                 .setConnectTimeout(this.redissonProps.getCommandTimeout());
         RedissonClient redissonClient = Redisson.create(config);

@@ -96,7 +96,7 @@ public class ElasticJobConfig {
         JobEventConfiguration jobEventConfig = new JobEventRdbConfiguration(dataSource);
         //创建SpringJobScheduler
         return new SpringJobScheduler(fileBackupJob, registryCenter,
-                createJobConfiguration(fileBackupJob.getClass(), "0/3 * * * * ?", 1, "0=text,1=image,2=radio,3=vedio")
+                createJobConfiguration(fileBackupJob.getClass(), "0 0/3 * * * ?", 1, "0=text,1=image,2=radio,3=vedio")
                 , jobEventConfig);
     }
 }
