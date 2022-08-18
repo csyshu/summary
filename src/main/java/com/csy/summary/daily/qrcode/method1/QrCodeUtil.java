@@ -1,4 +1,4 @@
-package com.csy.summary.daily.qrcode;
+package com.csy.summary.daily.qrcode.method1;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
