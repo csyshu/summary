@@ -1,4 +1,4 @@
-package com.csy.summary.daily.qrcode;
+package com.csy.summary.daily.qrcode.method1;
  
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
