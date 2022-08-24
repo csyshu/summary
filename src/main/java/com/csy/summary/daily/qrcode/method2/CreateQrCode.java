@@ -14,6 +14,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -34,6 +36,8 @@ import java.util.Map;
  */
 @SuppressWarnings({"unchecked", "rawtypes", "restriction"})
 public class CreateQrCode {
+
+    public static final Logger logger = LoggerFactory.getLogger(CreateQrCode.class);
 
     /**
      * logo默认边框颜色 WHITE
@@ -356,8 +360,8 @@ public class CreateQrCode {
             // 获取读取二维码结果
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(image)));
             result = multiFormatReader.decode(binaryBitmap, hints);
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            logger.error("读取QrCode异常：", e);
         }
         return result;
     }
