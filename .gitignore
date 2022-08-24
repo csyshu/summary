@@ -4,7 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 .mvn/
-.log/
+.logs/
 
 ### STS ###
 .apt_generated
@@ -20,7 +20,6 @@ target/
 *.iws
 *.iml
 *.ipr
-.logs
 
 ### NetBeans ###
 /nbproject/private/

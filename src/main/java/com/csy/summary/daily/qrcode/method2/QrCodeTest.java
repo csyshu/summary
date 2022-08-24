@@ -57,7 +57,7 @@ public class QrCodeTest {
 //            createQrCode.createLogoQrCode(path,text,300,300,logoPath);
 
             //	文字
-            createQrCode.createWordQrcode(path, "", text, 400, 470);
+//            createQrCode.createWordQrcode(path, "", text, 400, 470);
 
             //  Logo+文字
             createQrCode.createWordLogoQrcode(path, "", text, 400, 470, logoPath);
