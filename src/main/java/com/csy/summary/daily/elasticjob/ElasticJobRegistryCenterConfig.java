@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author shuyun.cheng
  */
-@Configuration
+//@Configuration
 public class ElasticJobRegistryCenterConfig {
 
     /**

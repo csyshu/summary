@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author shuyun.cheng
  */
-@Service
+//@Service
 public class FileService {
 
     @Autowired

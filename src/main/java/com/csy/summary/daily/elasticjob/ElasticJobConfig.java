@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 /**
  * @author shuyun.cheng
  */
-@Configuration
+//@Configuration
 public class ElasticJobConfig {
 
     @Autowired

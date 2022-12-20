@@ -89,6 +89,18 @@ spring:
         exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*, "
       #开启下面这个，会显示调用的具体接口以及参数信息
       aop-patterns: com.csy.druid.demo.web.*.*
+# MinIO配置
+minio:
+  # 服务地址
+  endpoint: http://127.0.0.1:9000
+  # 文件地址
+  fileHost: http://127.0.0.1:9000
+  # 存储桶名称
+  bucket: test
+  # 用户名
+  access-key: minioadmin
+  # 密码
+  secret-key: minioadmin
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml

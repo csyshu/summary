@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * @author shuyun.cheng
  */
-@Component
+//@Component
 public class ZkListener {
     @Resource
     private CuratorFramework curatorClient;

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author shuyun.cheng
  */
-@Component
+//@Component
 @Slf4j
 public class FileBackupJobDb implements SimpleJob {
 

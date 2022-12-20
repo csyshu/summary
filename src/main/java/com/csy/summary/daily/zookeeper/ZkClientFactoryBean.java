@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author shuyun.cheng
  */
-@Component
+//@Component
 public class ZkClientFactoryBean implements FactoryBean<CuratorFramework> {
     @Autowired
     private ZookeeperConfigure zookeeperConfigure;
