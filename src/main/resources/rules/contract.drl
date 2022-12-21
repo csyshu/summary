@@ -1,4 +1,4 @@
-import com.csy.druid.demo.beans.Contract              // 导入类
+import com.csy.summary.daily.beans.Contract              // 导入类
 
 dialect  "mvel"
 
