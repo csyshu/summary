@@ -1,10 +1,30 @@
 package com.csy.summary.daily.minio;
 
-import io.minio.*;
+import com.alibaba.fastjson.JSON;
+import io.minio.BucketExistsArgs;
+import io.minio.ComposeObjectArgs;
+import io.minio.ComposeSource;
+import io.minio.CopyObjectArgs;
+import io.minio.CopySource;
+import io.minio.GetBucketPolicyArgs;
+import io.minio.GetObjectArgs;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListObjectsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveBucketArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.Result;
+import io.minio.StatObjectArgs;
+import io.minio.UploadObjectArgs;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -15,8 +35,12 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -221,9 +245,9 @@ public class MinioUtil {
     /**
      * 使用MultipartFile进行文件上传
      *
-     * @param bucketName  存储桶名称
-     * @param file        文件名
-     * @param objectName  对象名
+     * @param bucketName 存储桶名称
+     * @param file       文件名
+     * @param objectName 对象名
      * @return ObjectWriteResponse对象
      */
     public static ObjectWriteResponse uploadFile(String bucketName, MultipartFile file, String objectName) throws Exception {
@@ -270,6 +294,104 @@ public class MinioUtil {
                 .build();
         return minioClient.putObject(putObjectArgs);
     }
+
+    /**
+     * 分片上传
+     *
+     * @param bucketName
+     * @param file
+     * @param chunk
+     * @return
+     */
+    public static ResultBean<Object> uploadFileByMultiple(String bucketName, MultipartFile file, String chunk) {
+        InputStream inputStream;
+        try {
+            inputStream = file.getInputStream();
+            String md5 = DigestUtils.md5Hex(inputStream);
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(md5 + "/" + chunk)
+                    .stream(inputStream, file.getSize(), -1)
+                    .contentType("application/x-img")
+                    .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultBean.error("上传失败", chunk);
+        }
+        return ResultBean.ok("上传成功", chunk);
+    }
+
+    /**
+     * 校验md5值
+     *
+     * @param bucketName
+     * @param fileName
+     * @param md5
+     * @return
+     */
+    private boolean checkMd5(String bucketName, String fileName, String md5) {
+        try {
+            //利用apache工具类获取文件md5值
+            InputStream inputStream = getObject(bucketName, fileName);
+            String md5Hex = DigestUtils.md5Hex(inputStream);
+            if (md5.equalsIgnoreCase(md5Hex)) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    /**
+     * 将块文件合并到新桶   块文件必须满足 名字是 0 1  2 3 5....
+     *
+     * @param bucketName 存块文件的桶
+     * @param objectName 存新文件的桶
+     * @param fileName1  存到新桶中的文件名称
+     * @return
+     */
+    public boolean merge(String bucketName, String objectName, String fileName1) {
+        try {
+            List<ComposeSource> sourceObjectList = new ArrayList<>();
+            List<Object> folderList = getFolderList(bucketName, objectName, true);
+            List<String> fileNames = new ArrayList<>();
+            if (!folderList.isEmpty()) {
+                for (Object value : folderList) {
+                    Map<String,Object> o = (Map<String,Object>) value;
+                    String name = (String) o.get("fileName");
+                    fileNames.add(name);
+                }
+            }
+            List<Integer> fileNameInt = new ArrayList<>();
+            List<String> fileNameLast = new ArrayList<>();
+            if (!fileNames.isEmpty()) {
+                for (String fileName : fileNames) {
+                    fileNameInt.add(Integer.parseInt(fileName.split("/")[1]));
+                }
+                Collections.sort(fileNameInt);
+                for (int j = 0; j < fileNameInt.size(); j++) {
+                    fileNameLast.add(fileNames.get(j).split("/")[0] + "/" + fileNameInt.get(j));
+                }
+                for (String name : fileNameLast) {
+                    sourceObjectList.add(ComposeSource.builder().bucket(bucketName).object(name).build());
+                }
+            }
+
+            minioClient.composeObject(
+                    ComposeObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(fileName1)
+                            .sources(sourceObjectList)
+                            .build());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     /**
      * 创建文件夹或目录
@@ -348,6 +470,34 @@ public class MinioUtil {
     }
 
     /**
+     * 删除临时文件夹及其中文件
+     *
+     * @param bucketName 存储桶名称
+     * @param objectName 文件夹名
+     */
+    public void deleteObject(String bucketName, String objectName) {
+        String objectNames = objectName + "/";
+        try {
+            if (StringUtils.isNotBlank(objectNames)) {
+                if (objectNames.endsWith(".") || objectNames.endsWith("/")) {
+                    Iterable<Result<Item>> list = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).prefix(objectNames).recursive(false).build());
+                    list.forEach(r -> {
+                        try {
+                            minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(r.get().objectName()).build());
+                        } catch (Exception e) {
+                            log.error("删除临时文件夹及其中文件失败：", e);
+                        }
+
+                    });
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * 获取文件外链
      *
      * @param bucketName 存储桶名称
@@ -390,4 +540,47 @@ public class MinioUtil {
         String url = str.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
         return URLDecoder.decode(url, "UTF-8");
     }
+
+    /**
+     * 获取指定bucketName下所有文件 文件名+大小
+     */
+    public static List<Object> getFolderList(String bucketName, String objectName, boolean isDir) throws Exception {
+        String objectNames;
+        if (isDir) {
+            objectNames = objectName + "/";
+        } else {
+            objectNames = objectName;
+        }
+        Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).prefix(objectNames).recursive(false).build());
+        Iterator<Result<Item>> iterator = results.iterator();
+        List<Object> items = new ArrayList<>();
+        String format = "{'fileName':'%s','fileSize':'%s'}";
+        while (iterator.hasNext()) {
+            Item item = iterator.next().get();
+            items.add(JSON.parse((String.format(format, item.objectName(),
+                    formatFileSize(item.size())))));
+        }
+        return items;
+    }
+
+    public static String formatFileSize(long fileS) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String fileSizeString;
+        String wrongSize = "0B";
+        if (fileS == 0) {
+            return wrongSize;
+        }
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + " B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + " KB";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + " MB";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + " GB";
+        }
+        return fileSizeString;
+    }
+
+
 }

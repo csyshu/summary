@@ -34,6 +34,10 @@ public class ResultBean<T> {
         return new ResultBean(msg);
     }
 
+    public static <T> ResultBean<T> error(String msg, T data) {
+        return new ResultBean(msg, data);
+    }
+
     public static ResultBean newInstance() {
         return new ResultBean<>();
     }

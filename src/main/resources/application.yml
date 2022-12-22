@@ -98,9 +98,9 @@ minio:
   # 存储桶名称
   bucket: test
   # 用户名
-  access-key: minioadmin
+  access-key: summary-user
   # 密码
-  secret-key: minioadmin
+  secret-key: summary-minio
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml

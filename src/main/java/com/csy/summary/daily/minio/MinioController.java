@@ -1,15 +1,11 @@
 package com.csy.summary.daily.minio;
 
-import com.alibaba.fastjson.JSON;
 import io.minio.GetObjectArgs;
-import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
-import io.minio.Result;
 import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
-import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author shuyun.cheng
+ */
 @Slf4j
 @RestController
 @RequestMapping("/minio")
@@ -78,17 +75,9 @@ public class MinioController {
     }
 
     @GetMapping("/list")
-    public List<Object> list() throws Exception {
+    public List<Object> list(String prefix) throws Exception {
         //获取bucket列表
-        Iterable<Result<Item>> myObjects = minioClient.listObjects(ListObjectsArgs.builder().bucket(minioProperties.getBucket()).build());
-        Iterator<Result<Item>> iterator = myObjects.iterator();
-        List<Object> items = new ArrayList<>();
-        String format = "{'fileName':'%s','fileSize':'%s'}";
-        while (iterator.hasNext()) {
-            Item item = iterator.next().get();
-            items.add(JSON.parse(String.format(format, item.objectName(), formatFileSize(item.size()))));
-        }
-        return items;
+        return MinioUtil.getFolderList(minioProperties.getBucket(), prefix, false);
     }
 
     @RequestMapping("/download/{fileName}")
@@ -124,24 +113,5 @@ public class MinioController {
             return ResultBean.error("删除失败");
         }
         return ResultBean.ok("删除成功", null);
-    }
-
-    private static String formatFileSize(long fileS) {
-        DecimalFormat df = new DecimalFormat("#.00");
-        String fileSizeString = "";
-        String wrongSize = "0B";
-        if (fileS == 0) {
-            return wrongSize;
-        }
-        if (fileS < 1024) {
-            fileSizeString = df.format((double) fileS) + " B";
-        } else if (fileS < 1048576) {
-            fileSizeString = df.format((double) fileS / 1024) + " KB";
-        } else if (fileS < 1073741824) {
-            fileSizeString = df.format((double) fileS / 1048576) + " MB";
-        } else {
-            fileSizeString = df.format((double) fileS / 1073741824) + " GB";
-        }
-        return fileSizeString;
     }
 }
