@@ -74,6 +74,11 @@ public class MinioController {
         return MinioUtil.getPreSignedObjectUrl(minioProperties.getBucket(), fileName);
     }
 
+    @GetMapping("/getInfo")
+    public String getInfo(String fileName) throws Exception {
+        return MinioUtil.getFileStatusInfo(minioProperties.getBucket(), fileName);
+    }
+
     @GetMapping("/list")
     public List<Object> list(String prefix) throws Exception {
         //获取bucket列表
