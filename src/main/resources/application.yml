@@ -3,6 +3,24 @@ server:
 spring:
   application:
     name: durid-rocketmq-rule-dynamic-loglevel
+  redis:
+    cluster:
+      nodes: 192.168.162.235:6379,192.168.162.235:6380,192.168.162.235:6381,192.168.162.235:6382,192.168.162.235:6383,192.168.162.235:6384
+      max-redirects: 3
+    password: 123456
+    #连接超时时间（毫秒）
+    timeout: 6000
+    lettuce:
+      cluster:
+        refresh:
+          adaptive: true
+          period: 1000
+      pool:
+        max-active: 300
+        min-idle: 10
+        max-idle: 100
+        time-between-eviction-runs: 5000
+        max-wait: 60000
   datasource:
     url: jdbc:mysql://localhost:3306/summary?autoReconnect=true&characterEncoding=UTF-8&useTimezone=true&serverTimezone=GMT%2B8
     username: csyshu
@@ -93,8 +111,6 @@ spring:
 minio:
   # 服务地址
   endpoint: http://127.0.0.1:9000
-  # 文件地址
-  fileHost: http://127.0.0.1:9000
   # 存储桶名称
   bucket: test
   # 用户名

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * MinIO配置类
+ * @author csy
  */
 @Configuration
 public class MinioConfiguration {
