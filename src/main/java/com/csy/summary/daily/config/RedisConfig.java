@@ -9,14 +9,11 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -25,20 +22,21 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author csy
- * @desc
  * @version v1.0
+ * @desc
  * @since 2022-12-26
  */
 @Configuration
 public class RedisConfig {
-    @Value("${spring.redis.host}")
-    private String redisHost;
+    @Value("${spring.redis.cluster.nodes}")
+    private String clusterNodes;
 
-    @Value("${spring.redis.port}")
-    private String redisPort;
+    @Value("${spring.redis.password}")
+    private String password;
 
     /**
      * 通过配置RedisStandaloneConfiguration实例来
@@ -49,7 +47,9 @@ public class RedisConfig {
      */
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, Integer.parseInt(redisPort)));
+        RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(Arrays.asList(clusterNodes.split(",")));
+        redisClusterConfiguration.setPassword(password);
+        return new JedisConnectionFactory(redisClusterConfiguration);
     }
 
     /**
@@ -87,18 +87,6 @@ public class RedisConfig {
                 .registerModule(new ParameterNamesModule());
         // --end --
         return new GenericJackson2JsonRedisSerializer(objectMapper);
-    }
-
-    /**
-     * 注入redis分布式锁实现方案redisson
-     *
-     * @return RedissonClient
-     */
-    @Bean
-    public RedissonClient redisson() {
-        Config config = new Config();
-        config.useSingleServer().setAddress("redis://" + redisHost + ":" + redisPort).setDatabase(0);
-        return Redisson.create(config);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.csy.summary.daily.web;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.csy.summary.daily.beans.ReturnBean;
 import com.csy.summary.daily.beans.User;
@@ -60,7 +61,7 @@ public class UserController {
 
     @GetMapping("/list")
     public String list() {
-        Page<User> userPage = userMapper.selectPage(new Page<>(), new QueryWrapper<User>().eq("name", "csy"));
+        IPage<User> userPage = userMapper.selectPage(new Page<>(), new QueryWrapper<User>().eq("name", "csy"));
         return JSON.toJSONString(userPage);
     }
 }

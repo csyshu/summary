@@ -53,12 +53,6 @@ public class MinioResumeUtil {
      */
     @Resource
     private MinioClient minioClient;
-
-    /**
-     * MinIO 配置类
-     */
-    @Resource
-    private MinioConfiguration minioConfiguration;
     @Resource
     private MinioProperties minioProperties;
 

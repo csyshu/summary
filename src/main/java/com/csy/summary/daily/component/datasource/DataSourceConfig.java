@@ -49,7 +49,6 @@ public class DataSourceConfig {
         props.put("poolPreparedStatements", env.getProperty("spring.datasource.druid.pool-prepared-statements"));
         props.put("maxPoolPreparedStatementPerConnectionSize", env.getProperty("spring.datasource.druid.max-pool-prepared-statement-per-connection-size"));
         props.put("filters", env.getProperty("spring.datasource.druid.filters"));
-        props.put("connectProperties", env.getProperty("spring.datasource.druid.connect-properties"));
         props.put("logAbandoned", env.getProperty("spring.datasource.druid.log-abandoned"));
         return DruidDataSourceFactory.createDataSource(props);
     }

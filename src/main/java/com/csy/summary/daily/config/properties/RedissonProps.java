@@ -1,4 +1,4 @@
-package com.csy.summary.daily.distributedlock;
+package com.csy.summary.daily.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

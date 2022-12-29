@@ -1,5 +1,6 @@
 package com.csy.summary.daily.distributedlock;
 
+import com.csy.summary.daily.config.properties.RedissonProps;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

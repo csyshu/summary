@@ -2,7 +2,7 @@ server:
   port: 8500
 spring:
   application:
-    name: durid-rocketmq-rule-dynamic-loglevel
+    name: druid-rocketmq-rule-dynamic-loglevel
   redis:
     cluster:
       nodes: 192.168.162.235:6379,192.168.162.235:6380,192.168.162.235:6381,192.168.162.235:6382,192.168.162.235:6383,192.168.162.235:6384
@@ -10,21 +10,21 @@ spring:
     password: 123456
     #连接超时时间（毫秒）
     timeout: 6000
-    lettuce:
-      cluster:
-        refresh:
-          adaptive: true
-          period: 1000
-      pool:
-        max-active: 300
-        min-idle: 10
-        max-idle: 100
-        time-between-eviction-runs: 5000
-        max-wait: 60000
+#    lettuce:
+#      cluster:
+#        refresh:
+#          adaptive: true
+#          period: 1000
+#      pool:
+#        max-active: 300
+#        min-idle: 10
+#        max-idle: 100
+#        time-between-eviction-runs: 5000
+#        max-wait: 60000
   datasource:
     url: jdbc:mysql://localhost:3306/summary?autoReconnect=true&characterEncoding=UTF-8&useTimezone=true&serverTimezone=GMT%2B8
     username: csyshu
-    password: 123456
+    password: csyshu@123
     #非必填 可以根据url自动判断
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -59,11 +59,11 @@ spring:
       filter:
         stat:
           enabled: true
+          slow-sql-millis: 5000
       filters: stat,wall
       # 使用全局的多个数据源的监控数据
       use-global-data-source-stat: true
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
       #如果logAbandoned=true,链接回收的时候控制台打印信息，测试环境可以加上true，线上环境false。会影响性能。
@@ -118,33 +118,33 @@ minio:
   # 密码
   secret-key: summary-minio
 
-mybatis-plus:
-  mapper-locations: classpath*:mapper/**/*.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.csy.summary.daily.beans
-  global-config:
-    db-config:
-      #刷新mapper 调试神器
-      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
-      id-type: auto
-      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
-      #数据库大写下划线转换
-      #capital-mode: true
-      #驼峰下划线转换
-      table-underline: true
-      #逻辑删除配置
-      #logic-delete-value: 0
-      #logic-not-delete-value: 1
-      #自定义填充策略接口实现
-      #meta-object-handler: com.baomidou.springboot.xxx
-      #自定义SQL注入器
-      #sql-injector: com.baomidou.springboot.xxx
-      insert-strategy: default
-      update-strategy: default
-      select-strategy: default
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: false
+#mybatis-plus:
+#  mapper-locations: classpath*:mapper/**/*.xml
+#  #实体扫描，多个package用逗号或者分号分隔
+#  typeAliasesPackage: com.csy.summary.daily.beans
+#  global-config:
+#    db-config:
+#      #刷新mapper 调试神器
+#      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+#      id-type: auto
+#      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+#      #数据库大写下划线转换
+#      #capital-mode: true
+#      #驼峰下划线转换
+#      table-underline: true
+#      #逻辑删除配置
+#      #logic-delete-value: 0
+#      #logic-not-delete-value: 1
+#      #自定义填充策略接口实现
+#      #meta-object-handler: com.baomidou.springboot.xxx
+#      #自定义SQL注入器
+#      #sql-injector: com.baomidou.springboot.xxx
+#      insert-strategy: default
+#      update-strategy: default
+#      select-strategy: default
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    cache-enabled: false
 
 #rocketmq:
 #  # 生产者配置
